@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 public class XanderLib {
 
     public static final String MOD_NAME = "XanderLib";
-    public static final String MOD_VER = "1.0";
+    public static final String MOD_VER = "0.1";
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
