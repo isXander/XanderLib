@@ -1,8 +1,8 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "xanderlib",
+  "name": "XanderLib",
+  "description": "A mod which contains all useful classes to reduce the overall size of Xander's mods.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
