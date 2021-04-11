@@ -1,11 +1,26 @@
-package co.uk.isxander.xanderlib.utils;
+/*
+ * Copyright (C) isXander [2019 - 2021]
+ * This program comes with ABSOLUTELY NO WARRANTY
+ * This is free software, and you are welcome to redistribute it
+ * under the certain conditions that can be found here
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
 
-import net.minecraft.util.EnumChatFormatting;
+package co.uk.isxander.xanderlib.utils;
 
 import java.util.Arrays;
 
 public final class InlineFormatter {
 
+    /**
+     * Warning: only works well with monospaced font
+     *
+     * @param text the text to format
+     * @param stringLength the max text length
+     * @param maxLength the max length of the output string
+     * @param cutoffString cuts off the text if it is above the string length and appends this string
+     * @return a string that is a specified length long, populated with whitespaces if the input text is smaller.
+     */
     public static String get(String text, int stringLength, int maxLength, String cutoffString) {
         int colorCount = 0;
         char[] chars = text.toCharArray();
