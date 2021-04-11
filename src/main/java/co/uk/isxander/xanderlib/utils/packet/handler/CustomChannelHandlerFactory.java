@@ -22,13 +22,17 @@ public class CustomChannelHandlerFactory {
     private boolean first;
     private List<String> requirements;
 
-    public CustomChannelHandlerFactory() {
-        this.name = null;
-        this.handler = null;
-        this.addBefore = null;
-        this.addAfter = null;
-        this.first = false;
-        this.requirements = new ArrayList<>();
+    public static CustomChannelHandlerFactory newInstance() {
+        return new CustomChannelHandlerFactory(null, null, null, null, false, new ArrayList<>());
+    }
+
+    private CustomChannelHandlerFactory(String name, ChannelHandler handler, String addBefore, String addAfter, boolean first, ArrayList<String> requirements) {
+        this.name = name;
+        this.handler = handler;
+        this.addBefore = addBefore;
+        this.addAfter = addAfter;
+        this.first = first;
+        this.requirements = requirements;
     }
 
     public CustomChannelHandlerFactory setName(String name) {

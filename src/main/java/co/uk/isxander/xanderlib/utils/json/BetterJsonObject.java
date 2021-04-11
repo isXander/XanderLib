@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BetterJsonObject {
+public final class BetterJsonObject {
     private final Gson pp;
     private JsonObject data;
 

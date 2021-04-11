@@ -13,10 +13,18 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-public class ImageUtils {
+public final class ImageUtils {
 
+    /**
+     * Rotates an image 180 degrees to appear upside-down
+     *
+     * @deprecated This method does exactly the same thing as rotate(img, 180)
+     * @param image image to flip
+     * @return flipped image
+     */
+    @Deprecated
     public static BufferedImage flipVertically(BufferedImage image) {
-        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         for (int x = 0; x < newImage.getWidth(); x++) {
             for (int y1 = 0, y2 = newImage.getHeight() - 1; y1 < newImage.getHeight(); y1++, y2--) {
                 newImage.setRGB(x, y1, image.getRGB(x, y2));
@@ -25,8 +33,14 @@ public class ImageUtils {
         return newImage;
     }
 
-    public static BufferedImage flipHorizontally(BufferedImage image) {
-        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    /**
+     * Mirrors an image on the horizontal axis
+     *
+     * @param image before image
+     * @return after image
+     */
+    public static BufferedImage mirror(BufferedImage image) {
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         for (int y = 0; y < newImage.getHeight(); y++) {
             for (int x1 = 0, x2 = newImage.getWidth() - 1; x1 < newImage.getWidth(); x1++, x2--) {
                 newImage.setRGB(x1, y, image.getRGB(x2, y));
@@ -35,7 +49,15 @@ public class ImageUtils {
         return newImage;
     }
 
-    public static BufferedImage rotate(BufferedImage image, int degrees) {
+    /**
+     * Rotates an image by x degrees using desired interpolation
+     *
+     * @param image before image
+     * @param degrees amount of degrees to rotate
+     * @param interpolationType the type of interpolation to be used when rotating {@link AffineTransformOp}
+     * @return rotated image
+     */
+    public static BufferedImage rotate(BufferedImage image, int degrees, int interpolationType) {
         float rads = (float)Math.toRadians(degrees);
         float sin = MathHelper.abs(MathHelper.sin(rads));
         float cos = MathHelper.abs(MathHelper.cos(rads));
@@ -46,8 +68,19 @@ public class ImageUtils {
         at.translate(w / 2f, h / 2f);
         at.rotate(rads, 0, 0);
         at.translate(-image.getWidth() / 2f, -image.getHeight() / 2f);
-        AffineTransformOp rotateOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+        AffineTransformOp rotateOp = new AffineTransformOp(at, interpolationType);
         return rotateOp.filter(image, rotated);
+    }
+
+    /**
+     * Rotates an image by x degrees using Bilinear interpolation
+     *
+     * @param image before image
+     * @param degrees amount of degrees to rotate
+     * @return rotated image
+     */
+    public static BufferedImage rotate(BufferedImage image, int degrees) {
+        return rotate(image, degrees, AffineTransformOp.TYPE_BILINEAR);
     }
 
 }

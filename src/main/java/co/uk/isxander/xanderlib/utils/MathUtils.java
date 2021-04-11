@@ -7,7 +7,7 @@
 
 package co.uk.isxander.xanderlib.utils;
 
-public class MathUtils {
+public final class MathUtils {
 
     /**
      * Clamps value between 0 and 1 and returns value.

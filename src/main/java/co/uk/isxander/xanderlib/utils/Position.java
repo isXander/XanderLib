@@ -9,7 +9,7 @@ package co.uk.isxander.xanderlib.utils;
 
 import net.minecraft.client.gui.ScaledResolution;
 
-public class Position {
+public final class Position {
 
     private float x, y, scale;
 

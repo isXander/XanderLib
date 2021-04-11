@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = XanderLib.MOD_ID, name = XanderLib.MOD_NAME, version = XanderLib.MOD_VER, clientSideOnly = true)
-public class XanderLib {
+public final class XanderLib {
 
     public static final String MOD_NAME = "XanderLib";
     public static final String MOD_VER = "0.1";

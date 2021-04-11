@@ -7,7 +7,7 @@
 
 package co.uk.isxander.xanderlib.utils;
 
-public class Version {
+public final class Version {
 
     private int major, minor, patch;
 
