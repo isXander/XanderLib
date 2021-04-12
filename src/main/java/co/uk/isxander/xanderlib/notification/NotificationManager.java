@@ -20,14 +20,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationManager implements Constants {
+public final class NotificationManager implements Constants {
 
     private static final int TOAST_WIDTH = 200;
     private static final int TOAST_PADDING_WIDTH = 5;

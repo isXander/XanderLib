@@ -8,7 +8,7 @@
 
 package co.uk.isxander.xanderlib.notification;
 
-class Notification {
+final class Notification {
 
     // these are package private on purpose im not an idiot
     String title;

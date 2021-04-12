@@ -34,7 +34,7 @@ import java.awt.*;
  *
  * @author Icovid | Icovid#3888
  */
-public class GLRenderer {
+public final class GLRenderer {
 
     /**
      * {@link GL11} scissor using minecraft screen positions.
