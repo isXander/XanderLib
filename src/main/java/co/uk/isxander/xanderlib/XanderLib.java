@@ -8,7 +8,9 @@
 
 package co.uk.isxander.xanderlib;
 
+import co.uk.isxander.xanderlib.notification.NotificationManager;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,5 +22,12 @@ public final class XanderLib {
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
+
+    @Mod.EventHandler
+    public void onPostInit(FMLPostInitializationEvent event) {
+        NotificationManager.INSTANCE.push("XanderLib", "XanderLib is not yet completed and should not be used in production mods.", () -> {
+            NotificationManager.INSTANCE.push("Follow up", "Notification toasts are also clickable!", null);
+        });
+    }
 
 }

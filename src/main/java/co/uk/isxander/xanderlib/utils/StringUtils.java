@@ -9,9 +9,11 @@
 package co.uk.isxander.xanderlib.utils;
 
 import com.google.common.base.Joiner;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class StringUtils {
@@ -99,6 +101,64 @@ public final class StringUtils {
         }
 
         return -1;
+    }
+
+    public static String wrapText(String text, FontRenderer fontRenderer, int lineWidth, String split) {
+        String[] words = text.split(split);
+        // current line width
+        int lineLength = 0;
+        // string concatenation in loop is bad
+        StringBuilder output = new StringBuilder();
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            // add a the word splitter after the word every time except the last word
+            if (i != words.length - 1) {
+                word += split;
+            }
+
+            // length of next word
+            int wordLength = fontRenderer.getStringWidth(word);
+
+            if (lineLength + wordLength <= lineWidth) { // if the current line length plus this next world is less than the maximum line width
+                // if the condition is met, we can just append the word to the current line as it is small enough
+                output.append(word);
+                lineLength += wordLength;
+            } else if (wordLength <= lineWidth) { // the word is not big enough to be larger than the whole line max width
+                // make a new line before adding the word
+                output.append("\n").append(word);
+                // the next line has just been made and has been populated with only one word. reset line length and add the word we just added
+                lineLength = wordLength;
+            } else {
+                // the single word will not fit so run the function again with just this word
+                // and tell it that every character is it's own word
+                output.append(wrapText(word, fontRenderer, lineWidth, "")).append(split);
+            }
+        }
+
+        return output.toString();
+    }
+
+    public static List<String> wrapTextLines(String text, FontRenderer fontRenderer, int lineWidth, String split) {
+        String wrapped = wrapText(text, fontRenderer, lineWidth, split);
+        if (wrapped.equals("")) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.asList(wrapped.split("\n"));
+    }
+
+    public static int count(String text, String toCheck) {
+        int count = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+            if (text.substring(i).startsWith(toCheck)) {
+                count++;
+                i += toCheck.length() - 1;
+            }
+        }
+
+        return count;
     }
 
 }

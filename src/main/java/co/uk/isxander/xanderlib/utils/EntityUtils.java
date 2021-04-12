@@ -14,7 +14,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
-public class EntityUtils implements Constants {
+public final class EntityUtils implements Constants {
 
     /**
      *

@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SoundUtils {
+public final class SoundUtils {
 
     public static void playSound(InputStream inputStream, float volume, float pan) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         AudioInputStream in = AudioSystem.getAudioInputStream(inputStream);

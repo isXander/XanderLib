@@ -18,4 +18,5 @@ build
 
 # other
 eclipse
-run
+run/*
+!run/.gitkeep
