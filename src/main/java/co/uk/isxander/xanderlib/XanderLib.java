@@ -8,6 +8,7 @@
 
 package co.uk.isxander.xanderlib;
 
+import co.uk.isxander.xanderlib.hypixel.locraw.LocrawManager;
 import co.uk.isxander.xanderlib.notification.NotificationManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -25,6 +26,9 @@ public final class XanderLib {
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
+        // Create the instance
+        LocrawManager.getInstance();
+        // Pre-Release Notice
         NotificationManager.INSTANCE.push("XanderLib", "XanderLib is not yet completed and should not be used in production mods.", () -> {
             NotificationManager.INSTANCE.push("Follow up", "Notification toasts are also clickable!", null);
         });

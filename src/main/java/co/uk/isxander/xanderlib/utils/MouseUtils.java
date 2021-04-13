@@ -9,7 +9,6 @@
 package co.uk.isxander.xanderlib.utils;
 
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Mouse;
 
 public final class MouseUtils implements Constants {
