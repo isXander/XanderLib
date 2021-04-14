@@ -56,6 +56,8 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+    embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32'
+    embed 'org.scala-lang:scala-library:2.11.12'
 }
 
 processResources{
