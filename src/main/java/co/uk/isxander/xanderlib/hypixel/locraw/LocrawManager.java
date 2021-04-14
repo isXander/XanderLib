@@ -4,6 +4,13 @@
  * This is free software, and you are welcome to redistribute it
  * under the certain conditions that can be found here
  * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * If you have any questions or concerns, please create
+ * an issue on the github page that can be found here
+ * https://github.com/isXander/XanderLib
+ *
+ * If you have a private concern, please contact
+ * isXander @ business.isxander@gmail.com
  */
 
 package co.uk.isxander.xanderlib.hypixel.locraw;
@@ -17,8 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-// TODO: 13/04/2021 test if it actually works
-public class LocrawManager implements Constants {
+public final class LocrawManager implements Constants {
 
     private static final LocrawManager INSTANCE = new LocrawManager();
 

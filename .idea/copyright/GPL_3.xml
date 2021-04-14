@@ -1,6 +1,6 @@
 <component name="CopyrightManager">
   <copyright>
-    <option name="notice" value="Copyright (C) isXander [2019 - &amp;#36;today.year]&#10;This program comes with ABSOLUTELY NO WARRANTY&#10;This is free software, and you are welcome to redistribute it &#10;under the certain conditions that can be found here&#10;https://www.gnu.org/licenses/gpl-3.0.en.html" />
+    <option name="notice" value="Copyright (C) isXander [2019 - &amp;#36;today.year]&#10;This program comes with ABSOLUTELY NO WARRANTY&#10;This is free software, and you are welcome to redistribute it &#10;under the certain conditions that can be found here&#10;https://www.gnu.org/licenses/gpl-3.0.en.html&#10;&#10;If you have any questions or concerns, please create&#10;an issue on the github page that can be found here&#10;https://github.com/isXander/XanderLib&#10;&#10;If you have a private concern, please contact&#10;isXander @ business.isxander@gmail.com" />
     <option name="myName" value="GPL 3" />
   </copyright>
 </component>

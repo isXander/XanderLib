@@ -4,6 +4,13 @@
  * This is free software, and you are welcome to redistribute it
  * under the certain conditions that can be found here
  * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * If you have any questions or concerns, please create
+ * an issue on the github page that can be found here
+ * https://github.com/isXander/XanderLib
+ *
+ * If you have a private concern, please contact
+ * isXander @ business.isxander@gmail.com
  */
 
 package co.uk.isxander.xanderlib.notification;
@@ -44,6 +51,10 @@ public final class NotificationManager implements Constants {
         if (title == null || description == null)
             throw new NullPointerException("Title or Description is null.");
         currentNotifications.add(new Notification(title, description, runnable));
+    }
+
+    public void push(String title, String description) {
+        push(title, description, null);
     }
 
     @SubscribeEvent
@@ -108,9 +119,15 @@ public final class NotificationManager implements Constants {
         if (notification.time >= 3f) {
             notification.closing = true;
         }
-        notification.time += (notification.closing ? -0.02f : 0.02f) * (event.renderTickTime * 3f);
-        if (notification.closing && notification.time <= 0)
+        if (mouseOver) {
+            notification.closing = false;
+        }
+        if (!(mouseOver && notification.time > 1f)) {
+            notification.time += (notification.closing ? -0.02f : 0.02f) * (event.renderTickTime * 3f);
+        }
+        if (notification.closing && notification.time <= 0) {
             currentNotifications.remove(notification);
+        }
     }
 
 }

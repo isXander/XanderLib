@@ -4,13 +4,20 @@
  * This is free software, and you are welcome to redistribute it
  * under the certain conditions that can be found here
  * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * If you have any questions or concerns, please create
+ * an issue on the github page that can be found here
+ * https://github.com/isXander/XanderLib
+ *
+ * If you have a private concern, please contact
+ * isXander @ business.isxander@gmail.com
  */
 
 package co.uk.isxander.xanderlib.hypixel.locraw;
 
 import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 
-public class LocationParsed {
+public final class LocationParsed {
 
     public static final LocationParsed LIMBO = new LocationParsed("limbo", GameType.LIMBO, null, null);
 
@@ -31,7 +38,7 @@ public class LocationParsed {
     }
 
     public LocationParsed(BetterJsonObject o) {
-        this(o.optString("server", "unknown"), GameType.valueOf(o.optString("gametype", "LIMBO")), o.optString("mode", null), o.optString("map", null));
+        this(o.optString("server", "unknown"), GameType.getType(o.optString("gametype", "LIMBO")), o.optString("mode", null), o.optString("map", null));
     }
 
     public String getServer() {
