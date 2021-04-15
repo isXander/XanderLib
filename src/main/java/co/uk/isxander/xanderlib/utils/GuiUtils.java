@@ -47,11 +47,11 @@ public final class GuiUtils implements Constants {
         }
     }
 
-    public static void drawWrappedCenteredChromaString(FontRenderer fontRendererIn, String text, float x, float y, boolean shadow, int width) {
+    public static void drawWrappedChromaString(FontRenderer fontRendererIn, String text, float x, float y, boolean shadow, int width, boolean centered) {
         List<String> lines = StringUtils.wrapTextLines(text, fontRendererIn, width, " ");
         int i = 0;
         for (String line : lines) {
-            GuiUtils.drawChromaString(fontRendererIn, line, x, y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i), shadow, true);
+            GuiUtils.drawChromaString(fontRendererIn, line, x, y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i), shadow, centered);
             i++;
         }
     }
