@@ -61,7 +61,7 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
-    embed group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.1'
+    embed 'com.squareup.okhttp3:okhttp:4.9.1'
 }
 
 processResources{
