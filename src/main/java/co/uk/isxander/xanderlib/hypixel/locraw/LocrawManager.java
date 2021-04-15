@@ -17,12 +17,14 @@ package co.uk.isxander.xanderlib.hypixel.locraw;
 
 import co.uk.isxander.xanderlib.XanderLib;
 import co.uk.isxander.xanderlib.utils.Constants;
+import co.uk.isxander.xanderlib.utils.MinecraftUtils;
 import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 import co.uk.isxander.xanderlib.utils.json.JsonUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public final class LocrawManager implements Constants {
 
@@ -37,30 +39,36 @@ public final class LocrawManager implements Constants {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void onChat(ClientChatReceivedEvent event) {
-        String message = event.message.getUnformattedText();
+        if (MinecraftUtils.isHypixel()) {
+            String message = event.message.getUnformattedText();
 
-        switch (message) {
-            // Hypixel sends either of these messages when you switch lobbies
-            case "                         ":
-            case "       ":
-                waitingForLocraw = true;
-                mc.thePlayer.sendChatMessage("/locraw");
-                break;
-            // User has gone to limbo.
-            case "You are AFK. Move around to return from AFK.":
-                currentLocation = LocationParsed.LIMBO;
-        }
-
-        if (JsonUtils.isValidJson(message)) {
-            BetterJsonObject json = new BetterJsonObject(message);
-            if (json.getData() != null && json.has("server")) {
-                if (waitingForLocraw) {
-                    waitingForLocraw = false;
-                    event.setCanceled(true);
-                }
-                currentLocation = new LocationParsed(json);
-                XanderLib.LOGGER.info("Switched GameType to: " + currentLocation.getGameType().name());
+            switch (message) {
+                // Hypixel sends either of these messages when you switch lobbies
+                case "                         ":
+                case "       ":
+                    if (!waitingForLocraw) {
+                        waitingForLocraw = true;
+                        mc.thePlayer.sendChatMessage("/locraw");
+                    }
+                    break;
+                // User has gone to limbo.
+                case "You are AFK. Move around to return from AFK.":
+                    currentLocation = LocationParsed.LIMBO;
             }
+
+            if (JsonUtils.isValidJson(message)) {
+                BetterJsonObject json = new BetterJsonObject(message);
+                if (json.getData() != null && json.has("server")) {
+                    if (waitingForLocraw) {
+                        waitingForLocraw = false;
+                        event.setCanceled(true);
+                    }
+                    currentLocation = new LocationParsed(json);
+                    XanderLib.LOGGER.info("Switched GameType to: " + currentLocation.getGameType().name());
+                }
+            }
+        } else {
+            currentLocation = LocationParsed.LIMBO;
         }
     }
 

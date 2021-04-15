@@ -15,65 +15,35 @@
 
 package co.uk.isxander.xanderlib.utils;
 
-import co.uk.isxander.xanderlib.XanderLib;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.Loader;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Map;
 
-// FIXME: 14/04/2021 make it work
-public class GuiUtils {
+public final class GuiUtils implements Constants {
 
-    public static final GuiUtils INSTANCE = new GuiUtils();
-
-    private final Map<Class<? extends GuiScreen>, ArrayList<GuiButton>> customButtons;
-
-    private GuiUtils() {
-        this.customButtons = new HashMap<>();
-        MinecraftForge.EVENT_BUS.register(this);
+    public static void drawCenteredString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow) {
+        fontRendererIn.drawString(text, x - fontRendererIn.getStringWidth(text) / 2f, y, color, shadow);
     }
 
-    public void addButton(Class<? extends GuiScreen> guiClass, GuiButton... buttons) {
-        customButtons.putIfAbsent(guiClass, new ArrayList<>());
-        customButtons.get(guiClass).addAll(Arrays.asList(buttons));
-    }
+    public static void drawChromaString(String text, float x, float y, boolean shadow, boolean centered) {
+        if (centered)
+            x -= mc.fontRendererObj.getStringWidth(text) / 2f;
 
-    public void removeButton(Class<? extends GuiScreen> guiClass, GuiButton... buttons) {
-        if (customButtons.containsKey(guiClass)) {
-            customButtons.get(guiClass).removeAll(Arrays.asList(buttons));
+        for (char c : text.toCharArray()) {
+            int i = getChroma(x, y).getRGB();
+            String tmp = String.valueOf(c);
+            mc.fontRendererObj.drawString(tmp, x, y, i, shadow);
+            x += mc.fontRendererObj.getStringWidth(tmp);
         }
     }
 
-    @SubscribeEvent
-    public void onGuiOpen(GuiOpenEvent event) {
-        System.out.println(event.gui.getClass().getName());
-        List<GuiButton> buttons = customButtons.get(event.gui.getClass());
-        if (buttons != null) {
-            try {
-                Class<GuiScreen> screen = getGuiScreenSuperclass(event.gui.getClass());
-                Field buttonListField = ReflectionHelper.findField(screen, "buttonList", "field_146292_n");
-                buttonListField.setAccessible(true);
-                List<GuiButton> buttonList = (List<GuiButton>) buttonListField.get(event.gui);
-                XanderLib.LOGGER.info("Injected buttons to '" + event.gui.getClass().getSimpleName() + "' -> " + buttons);
-                buttonList.addAll(buttons);
-                buttonListField.set(event.gui, buttonList);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static Class<GuiScreen> getGuiScreenSuperclass(Class<? extends GuiScreen> clazz) {
-        Class<?> screen = clazz;
-        while (!screen.getName().equals(GuiScreen.class.getName())) {
-            screen = screen.getSuperclass();
-        }
-        return (Class<GuiScreen>) screen;
+    public static Color getChroma(double x, double y) {
+        float v = 2000.0f;
+        return new Color(Color.HSBtoRGB((float)((System.currentTimeMillis() - x * 10.0 * 1.0 - y * 10.0 * 1.0) % v) / v, 0.8f, 0.8f));
     }
 
 }

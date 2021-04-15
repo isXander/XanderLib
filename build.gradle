@@ -50,14 +50,18 @@ configurations {
 
 
 dependencies {
+    // Languages
+    embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32'
+    embed 'org.scala-lang:scala-library:2.11.12'
+
+    // Utilities
     embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
-    embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32'
-    embed 'org.scala-lang:scala-library:2.11.12'
+    embed group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.1'
 }
 
 processResources{

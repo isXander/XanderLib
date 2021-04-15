@@ -22,7 +22,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.regex.Pattern;
 
-public class MinecraftUtils implements Constants {
+public final class MinecraftUtils implements Constants {
 
     public static final Pattern HYPIXEL_IP = Pattern.compile("^(?:(?:(?:.+\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3})|(?:99\\.198\\.123\\.[123]?\\d?))\\.?(?::\\d{1,5}\\.?)?$", Pattern.CASE_INSENSITIVE);
 
@@ -32,17 +32,15 @@ public class MinecraftUtils implements Constants {
     }
 
     /**
-     * @deprecated Recommended to use {@link co.uk.isxander.xanderlib.notification.NotificationManager} instead
+     * @deprecated Recommended to use {@link co.uk.isxander.xanderlib.ui.notification.NotificationManager} instead
      */
-    @Deprecated
     public static void addChat(String prefix, String message) {
         mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + prefix + " " + EnumChatFormatting.RESET + message));
     }
 
     /**
-     * @deprecated Recommended to use {@link co.uk.isxander.xanderlib.notification.NotificationManager} instead
+     * @deprecated Recommended to use {@link co.uk.isxander.xanderlib.ui.notification.NotificationManager} instead
      */
-    @Deprecated
     public static void addChat(String message) {
         addChat("XanderLib", message);
     }
