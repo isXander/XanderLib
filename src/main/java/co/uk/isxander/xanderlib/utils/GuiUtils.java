@@ -16,12 +16,9 @@
 package co.uk.isxander.xanderlib.utils;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.common.Loader;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Map;
+import java.awt.Color;
+import java.util.List;
 
 public final class GuiUtils implements Constants {
 
@@ -29,15 +26,33 @@ public final class GuiUtils implements Constants {
         fontRendererIn.drawString(text, x - fontRendererIn.getStringWidth(text) / 2f, y, color, shadow);
     }
 
-    public static void drawChromaString(String text, float x, float y, boolean shadow, boolean centered) {
+    public static void drawChromaString(FontRenderer fontRendererIn, String text, float x, float y, boolean shadow, boolean centered) {
         if (centered)
-            x -= mc.fontRendererObj.getStringWidth(text) / 2f;
+            x -= fontRendererIn.getStringWidth(text) / 2f;
 
         for (char c : text.toCharArray()) {
             int i = getChroma(x, y).getRGB();
             String tmp = String.valueOf(c);
-            mc.fontRendererObj.drawString(tmp, x, y, i, shadow);
-            x += mc.fontRendererObj.getStringWidth(tmp);
+           fontRendererIn.drawString(tmp, x, y, i, shadow);
+            x += fontRendererIn.getStringWidth(tmp);
+        }
+    }
+
+    public static void drawWrappedCenteredString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow, int width) {
+        List<String> lines = StringUtils.wrapTextLines(text, fontRendererIn, width, " ");
+        int i = 0;
+        for (String line : lines) {
+            GuiUtils.drawCenteredString(fontRendererIn, line, x, y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i), color, shadow);
+            i++;
+        }
+    }
+
+    public static void drawWrappedCenteredChromaString(FontRenderer fontRendererIn, String text, float x, float y, boolean shadow, int width) {
+        List<String> lines = StringUtils.wrapTextLines(text, fontRendererIn, width, " ");
+        int i = 0;
+        for (String line : lines) {
+            GuiUtils.drawChromaString(fontRendererIn, line, x, y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i), shadow, true);
+            i++;
         }
     }
 
