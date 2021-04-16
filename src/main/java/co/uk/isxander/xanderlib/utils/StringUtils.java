@@ -127,7 +127,7 @@ public final class StringUtils {
             // length of next word
             int wordLength = fontRenderer.getStringWidth(word);
 
-            if (lineLength + wordLength <= lineWidth) { // if the current line length plus this next world is less than the maximum line width
+            if (lineLength + wordLength <= lineWidth) { // if the current line length plus this next word is less than the maximum line width
                 // if the condition is met, we can just append the word to the current line as it is small enough
                 output.append(word);
                 lineLength += wordLength;

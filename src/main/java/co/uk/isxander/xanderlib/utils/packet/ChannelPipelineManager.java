@@ -78,6 +78,10 @@ public final class ChannelPipelineManager implements Constants {
      */
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (mc.getNetHandler() == null) {
+            return;
+        }
+
         ChannelPipeline pipeline = mc.getNetHandler().getNetworkManager().channel().pipeline();
         new HashMap<>(handlers).forEach((handler, added) -> {
             if (!added) {

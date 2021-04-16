@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 public final class MinecraftUtils implements Constants {
 
+    // credit to modcore for the regex
     public static final Pattern HYPIXEL_IP = Pattern.compile("^(?:(?:(?:.+\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3})|(?:99\\.198\\.123\\.[123]?\\d?))\\.?(?::\\d{1,5}\\.?)?$", Pattern.CASE_INSENSITIVE);
 
     public static boolean isHypixel() {
