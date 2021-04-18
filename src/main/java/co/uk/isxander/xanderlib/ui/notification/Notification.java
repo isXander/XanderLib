@@ -26,6 +26,7 @@ final class Notification {
     float width;
     float mouseOverAdd;
     boolean closing;
+    boolean clicked;
 
     Notification(String title, String description, Runnable runnable) {
         this.title = title;
@@ -36,5 +37,6 @@ final class Notification {
         this.width = 0;
         this.mouseOverAdd = 0;
         this.closing = false;
+        this.clicked = false;
     }
 }

@@ -17,45 +17,54 @@ package co.uk.isxander.xanderlib.hypixel.locraw;
 
 public enum GameType {
     /* Bedwars */
-    BEDWARS,
+    BEDWARS("Bedwars"),
     /* Skyblock */
-    SKYBLOCK,
+    SKYBLOCK("Skyblock"),
     /* Prototype Games */
-    PROTOTYPE,
+    PROTOTYPE("Prototype"),
     /* Arcade */
-    ARCADE,
+    ARCADE("Arcade"),
     /* The Pit */
-    PIT,
+    PIT("The Pit"),
     /* Main Lobby */
-    MAIN,
+    MAIN("Main Lobby"),
     /* Skywars */
-    SKYWARS,
+    SKYWARS("Skywars"),
     /* Murder Mystery */
-    MURDER_MYSTERY,
+    MURDER_MYSTERY("Murder Mystery"),
     /* Housing */
-    HOUSING,
+    HOUSING("Housing"),
     /* Build Battle */
-    BUILD_BATTLE,
+    BUILD_BATTLE("Build Battle"),
     /* Duels */
-    DUELS,
+    DUELS("Duels"),
     /* UHC Champions */
-    UHC,
+    UHC("UHC Champions"),
     /* Tnt Games */
-    TNTGAMES,
+    TNTGAMES("TNT Games"),
     /* Classic Games */
-    LEGACY,
+    LEGACY("Classic Games"),
     /* Cops and Crims */
-    MCGO,
+    MCGO("Cops and Crims"),
     /* Blitz SG */
-    SURVIVAL_GAMES,
+    SURVIVAL_GAMES("Blitz SG"),
     /* Mega Walls */
-    WALLS3,
+    WALLS3("Mega Walls"),
     /* Smash Heroes */
-    SUPER_SMASH,
+    SUPER_SMASH("Smash Heroes"),
     /* Warlords */
-    BATTLEGROUNDS,
+    BATTLEGROUNDS("Warlords"),
     /* Limbo - the afk house */
-    LIMBO;
+    LIMBO("Limbo");
+
+    private final String friendlyName;
+    GameType(String friendlyName) {
+        this.friendlyName = friendlyName;
+    }
+
+    public String friendlyName() {
+        return friendlyName;
+    }
 
     public static GameType getType(String name) {
         try {

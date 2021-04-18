@@ -25,31 +25,42 @@ import java.net.URL;
 
 public class HttpsUtils {
 
-    public static Response getResponse(URL url) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("User-Agent", XanderLib.MOD_NAME + "/" + XanderLib.MOD_VER)
-                .build();
-        return client.newCall(request).execute();
+    public static Response getResponse(String url) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("User-Agent", XanderLib.MOD_NAME + "/" + XanderLib.MOD_VER)
+                    .build();
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static byte[] getBytes(URL url) throws IOException {
-        return getResponse(url).body().bytes();
+    public static byte[] getBytes(String url) {
+        try {
+            return getResponse(url).body().bytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static String getString(URL url) throws IOException {
-        return getResponse(url).body().string();
+    public static String getString(String url) {
+        try {
+            return getResponse(url).body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static void downloadFile(URL url, File file) throws IOException {
+    public static void downloadFile(String url, File file) throws IOException {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getBytes(url));
         fos.close();
-    }
-
-    public interface ResponseExecutor {
-        void run(Response response);
     }
 
 }

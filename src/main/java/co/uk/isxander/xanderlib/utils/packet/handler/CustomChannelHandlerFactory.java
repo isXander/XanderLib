@@ -49,6 +49,9 @@ public class CustomChannelHandlerFactory {
     }
 
     public CustomChannelHandlerFactory setHandler(ChannelHandler handler) {
+        if (handler.getClass().getAnnotation(ChannelHandler.Sharable.class) == null) {
+            throw new IllegalArgumentException("ChannelHandler must be sharable.");
+        }
         this.handler = handler;
         return this;
     }
@@ -121,7 +124,7 @@ public class CustomChannelHandlerFactory {
     }
 
     public boolean validate() {
-        return !(name == null || handler == null);
+        return !(name == null || handler == null || requirements == null);
     }
 
 }

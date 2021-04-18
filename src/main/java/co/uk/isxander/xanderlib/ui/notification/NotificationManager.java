@@ -39,11 +39,9 @@ public final class NotificationManager implements Constants {
     private static final int TOAST_PADDING_HEIGHT = 3;
     private static final int TOAST_TEXT_DISTANCE = 2;
 
-    public static final NotificationManager INSTANCE = new NotificationManager();
-
     private final List<Notification> currentNotifications = new ArrayList<>();
 
-    private NotificationManager() {
+    public NotificationManager() {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -85,12 +83,6 @@ public final class NotificationManager implements Constants {
         float mouseX = MouseUtils.getMouseX();
         float mouseY = MouseUtils.getMouseY();
         boolean mouseOver = mouseX >= rectX && mouseX <= rectX + rectWidth && mouseY >= rectY && mouseY <= rectY + rectHeight;
-        if (notification.runnable != null && mouseOver && MouseUtils.isMouseDown()) {
-            notification.runnable.run();
-            notification.closing = true;
-            if (notification.time > 1f)
-                notification.time = 1f;
-        }
 
         opacity += notification.mouseOverAdd = MathUtils.lerp(notification.mouseOverAdd, (mouseOver ? 40 : 0), event.renderTickTime / 4f);
 
@@ -119,10 +111,15 @@ public final class NotificationManager implements Constants {
         if (notification.time >= 3f) {
             notification.closing = true;
         }
-        if (mouseOver) {
-            notification.closing = false;
+        if (!notification.clicked && mouseOver && MouseUtils.isMouseDown()) {
+            notification.clicked = true;
+            if (notification.runnable != null)
+                notification.runnable.run();
+            notification.closing = true;
+            if (notification.time > 1f)
+                notification.time = 1f;
         }
-        if (!(mouseOver && notification.time > 1f)) {
+        if (!((mouseOver && notification.clicked) && notification.time > 1f)) {
             notification.time += (notification.closing ? -0.02f : 0.02f) * (event.renderTickTime * 3f);
         }
         if (notification.closing && notification.time <= 0) {

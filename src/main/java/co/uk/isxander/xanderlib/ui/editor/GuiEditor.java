@@ -25,51 +25,138 @@ import java.util.*;
 
 public final class GuiEditor {
 
-    private static GuiEditor INSTANCE = new GuiEditor();
+    public final Map<Class<? extends GuiScreen>, ArrayList<AbstractGuiModifier>> guiModifiers;
 
-    public final Map<Class<? extends GuiScreen>, ArrayList<AbstractCustomButton>> customButtons;
+    private int mouseX, mouseY;
+    private float partialTicks;
 
-    private GuiEditor() {
-        this.customButtons = new HashMap<>();
+    public GuiEditor() {
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.partialTicks = 0;
+
+        this.guiModifiers = new HashMap<>();
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public void addButtons(Class<? extends GuiScreen> gui, AbstractCustomButton... buttons) {
-        this.customButtons.putIfAbsent(gui, new ArrayList<>());
-        this.customButtons.get(gui).addAll(Arrays.asList(buttons));
+    public void addModifier(Class<? extends GuiScreen> gui, AbstractGuiModifier... buttons) {
+        this.guiModifiers.putIfAbsent(gui, new ArrayList<>());
+        this.guiModifiers.get(gui).addAll(Arrays.asList(buttons));
     }
 
-    public void removeButtons(Class<? extends GuiScreen> gui, AbstractCustomButton... buttons) {
-        List<AbstractCustomButton> b = customButtons.get(gui);
-        if (b != null) {
-            b.removeAll(Arrays.asList(buttons));
+    public void removeModifier(Class<? extends GuiScreen> gui, AbstractGuiModifier... buttons) {
+        List<AbstractGuiModifier> mod = guiModifiers.get(gui);
+        if (mod != null) {
+            mod.removeAll(Arrays.asList(buttons));
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-    public void onGuiInit(GuiScreenEvent.InitGuiEvent.Post event) {
-        List<AbstractCustomButton> buttons = customButtons.get(event.gui.getClass());
-        if (buttons != null) {
-            for (AbstractCustomButton button : buttons) {
-                event.buttonList.add(button.getButton());
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onGuiInitPre(GuiScreenEvent.InitGuiEvent.Pre event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onInitGuiPre(event.gui, event.buttonList);
+            }
+        }
+    }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onGuiInitPost(GuiScreenEvent.InitGuiEvent.Post event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onInitGuiPost(event.gui, event.buttonList);
             }
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-    public void onActionPerformed(GuiScreenEvent.ActionPerformedEvent.Post event) {
-        List<AbstractCustomButton> buttons = customButtons.get(event.gui.getClass());
-        if (buttons != null) {
-            for (AbstractCustomButton button : buttons) {
-                if (event.button.equals(button.getButton())) {
-                    button.onActionPerformed(event.gui);
-                }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onActionPerformedPre(GuiScreenEvent.ActionPerformedEvent.Pre event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onActionPerformedPre(event.gui, event.buttonList, event.button);
+            }
+        }
+    }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onActionPerformedPost(GuiScreenEvent.ActionPerformedEvent.Post event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onActionPerformedPost(event.gui, event.buttonList, event.button);
             }
         }
     }
 
-    public static GuiEditor getInstance() {
-        return INSTANCE;
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                this.mouseX = event.mouseX;
+                this.mouseY = event.mouseY;
+                this.partialTicks = event.renderPartialTicks;
+                mod.onDrawScreenPre(event.gui, mouseX, mouseY, event.renderPartialTicks);
+            }
+        }
+    }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onDrawScreenPost(GuiScreenEvent.DrawScreenEvent.Post event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onDrawScreenPost(event.gui, mouseX, mouseY, partialTicks);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onBackgroundDraw(GuiScreenEvent.BackgroundDrawnEvent event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onBackgroundDraw(event.gui, event.getMouseX(), event.getMouseY());
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onKeyboardInputPre(GuiScreenEvent.KeyboardInputEvent.Pre event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onKeyboardInputPre(event.gui);
+            }
+        }
+    }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onKeyboardInputPost(GuiScreenEvent.KeyboardInputEvent.Post event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onKeyboardInputPost(event.gui);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onMouseInputPre(GuiScreenEvent.MouseInputEvent.Pre event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onMouseInputPre(event.gui);
+            }
+        }
+    }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onMouseInputPost(GuiScreenEvent.MouseInputEvent.Post event) {
+        List<AbstractGuiModifier> mods = guiModifiers.get(event.gui.getClass());
+        if (mods != null) {
+            for (AbstractGuiModifier mod : mods) {
+                mod.onMouseInputPost(event.gui);
+            }
+        }
     }
 
 }

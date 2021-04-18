@@ -25,6 +25,7 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,9 +40,18 @@ public final class ModifiedTextureManager implements Constants {
     }
 
     public void bindTexture(File file) {
+        bindTexture(file, (img) -> img);
+    }
+
+    public void bindTexture(File file, ExternalFileTexture.ImageModifier imageModifier) {
         ITextureObject texture = fileTextureMap.get(file);
         if (texture == null) {
-            texture = new ExternalFileTexture(file);
+            texture = new ExternalFileTexture(file) {
+                @Override
+                protected BufferedImage modifyImage(BufferedImage original) {
+                    return imageModifier.modify(original);
+                }
+            };
             loadTexture(file, texture);
         }
 
@@ -75,8 +85,10 @@ public final class ModifiedTextureManager implements Constants {
     }
 
     public void deleteTexture(File file) {
-        GlStateManager.deleteTexture(fileTextureMap.get(file).getGlTextureId());
-        fileTextureMap.remove(file);
+        if (fileTextureMap.containsKey(file)) {
+            GlStateManager.deleteTexture(fileTextureMap.get(file).getGlTextureId());
+            fileTextureMap.remove(file);
+        }
     }
 
 

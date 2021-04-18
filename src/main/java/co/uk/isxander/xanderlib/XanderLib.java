@@ -17,16 +17,16 @@ package co.uk.isxander.xanderlib;
 
 import co.uk.isxander.xanderlib.event.PacketEvent;
 import co.uk.isxander.xanderlib.hypixel.locraw.LocrawManager;
-import co.uk.isxander.xanderlib.ui.editor.AbstractCustomButton;
+import co.uk.isxander.xanderlib.ui.GuiHandler;
+import co.uk.isxander.xanderlib.ui.editor.AbstractGuiModifier;
 import co.uk.isxander.xanderlib.ui.editor.GuiEditor;
 import co.uk.isxander.xanderlib.ui.notification.NotificationManager;
 import co.uk.isxander.xanderlib.utils.Constants;
 import co.uk.isxander.xanderlib.utils.packet.ChannelPipelineManager;
+import co.uk.isxander.xanderlib.utils.packet.adapters.*;
 import co.uk.isxander.xanderlib.utils.packet.handler.CustomChannelHandlerFactory;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
-import io.netty.channel.ChannelPromise;
+import co.uk.isxander.xanderlib.utils.texturemanager.ModifiedTextureManager;
+import io.netty.channel.*;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
@@ -40,6 +40,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 @Mod(modid = XanderLib.MOD_ID, name = XanderLib.MOD_NAME, version = XanderLib.MOD_VER, clientSideOnly = true)
 public final class XanderLib implements Constants {
 
@@ -49,24 +51,46 @@ public final class XanderLib implements Constants {
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
 
-    @Mod.EventHandler
-    public void onInit(FMLInitializationEvent event) {
+    @Mod.Instance(MOD_ID)
+    private static XanderLib instance;
+
+    private LocrawManager locrawManager;
+    private GuiHandler guiHandler;
+    private NotificationManager notificationManager;
+    private GuiEditor guiEditor;
+    private ChannelPipelineManager channelPipelineManager;
+    private ModifiedTextureManager modifiedTextureManager;
+
+    private boolean initialised = false;
+
+    public void initPhase() {
+        if (initialised)
+            return;
+        initialised = true;
+
+        modifiedTextureManager = new ModifiedTextureManager();
+        locrawManager = new LocrawManager();
+        guiHandler = new GuiHandler();
+        guiEditor = new GuiEditor();
+        notificationManager = new NotificationManager();
+        channelPipelineManager = new ChannelPipelineManager();
+
         ScaledResolution res = new ScaledResolution(mc);
-        GuiEditor.getInstance().addButtons(GuiOptions.class, new AbstractCustomButton() {
+        getGuiEditor().addModifier(GuiOptions.class, new AbstractGuiModifier() {
             @Override
-            protected GuiButton button() {
-                return new GuiButtonExt(990, res.getScaledWidth() - 75, 0, 75, 20, "XanderLib");
+            public void onInitGuiPost(GuiScreen screen, List<GuiButton> buttonList) {
+                buttonList.add(new GuiButtonExt(990, res.getScaledWidth() - 75, 0, 75, 20, "XanderLib"));
             }
 
             @Override
-            public void onActionPerformed(GuiScreen screen) {
-                NotificationManager.INSTANCE.push("XanderLib", "This feature has not yet been added in this release.");
+            public void onActionPerformedPost(GuiScreen screen, List<GuiButton> buttonList, GuiButton button) {
+                getNotificationManager().push("XanderLib", "This feature has not yet been added in this release.");
             }
         });
 
-        ChannelPipelineManager.getInstance().addHandler(CustomChannelHandlerFactory.newInstance()
+        getChannelPipelineManager().addHandler(CustomChannelHandlerFactory.newInstance()
                 .setName("xanderlib_packet_listener_inbound")
-                .setHandler(new ChannelInboundHandlerAdapter() {
+                .setHandler(new SharableChannelInboundHandlerAdapter() {
                     @Override
                     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                         super.channelRead(ctx, msg);
@@ -75,9 +99,9 @@ public final class XanderLib implements Constants {
                     }
                 })
                 .build());
-        ChannelPipelineManager.getInstance().addHandler(CustomChannelHandlerFactory.newInstance()
+        getChannelPipelineManager().addHandler(CustomChannelHandlerFactory.newInstance()
                 .setName("xanderlib_packet_listener_outbound")
-                .setHandler(new ChannelOutboundHandlerAdapter() {
+                .setHandler(new SharableChannelOutboundHandlerAdapter() {
                     @Override
                     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
                         super.write(ctx, msg, promise);
@@ -89,13 +113,41 @@ public final class XanderLib implements Constants {
     }
 
     @Mod.EventHandler
-    public void onPostInit(FMLPostInitializationEvent event) {
-        // Create the instance
-        LocrawManager.getInstance();
-        // Pre-Release Notice
-        NotificationManager.INSTANCE.push("XanderLib", "XanderLib is not yet completed and should not be used in production mods.", () -> {
-            NotificationManager.INSTANCE.push("Follow up", "Notification toasts are also clickable!", null);
-        });
+    public void onInit(FMLInitializationEvent event) {
+        initPhase();
     }
 
+    @Mod.EventHandler
+    public void onPostInit(FMLPostInitializationEvent event) {
+        // Create the instance
+
+    }
+
+    public static XanderLib getInstance() {
+        return instance;
+    }
+
+    public ModifiedTextureManager getModifiedTextureManager() {
+        return modifiedTextureManager;
+    }
+
+    public LocrawManager getLocrawManager() {
+        return locrawManager;
+    }
+
+    public GuiHandler getGuiHandler() {
+        return guiHandler;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
+
+    public GuiEditor getGuiEditor() {
+        return guiEditor;
+    }
+
+    public ChannelPipelineManager getChannelPipelineManager() {
+        return channelPipelineManager;
+    }
 }

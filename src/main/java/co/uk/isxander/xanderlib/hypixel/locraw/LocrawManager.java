@@ -18,6 +18,7 @@ package co.uk.isxander.xanderlib.hypixel.locraw;
 import co.uk.isxander.xanderlib.XanderLib;
 import co.uk.isxander.xanderlib.utils.Constants;
 import co.uk.isxander.xanderlib.utils.MinecraftUtils;
+import co.uk.isxander.xanderlib.utils.Multithreading;
 import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 import co.uk.isxander.xanderlib.utils.json.JsonUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -26,14 +27,14 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-public final class LocrawManager implements Constants {
+import java.util.concurrent.TimeUnit;
 
-    private static final LocrawManager INSTANCE = new LocrawManager();
+public final class LocrawManager implements Constants {
 
     private LocationParsed currentLocation = LocationParsed.LIMBO;
     private boolean waitingForLocraw = false;
 
-    private LocrawManager() {
+    public LocrawManager() {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -48,7 +49,9 @@ public final class LocrawManager implements Constants {
                 case "       ":
                     if (!waitingForLocraw) {
                         waitingForLocraw = true;
-                        mc.thePlayer.sendChatMessage("/locraw");
+                        Multithreading.scheduleAsync(() -> {
+                            mc.thePlayer.sendChatMessage("/locraw");
+                        }, 500, TimeUnit.MILLISECONDS);
                     }
                     break;
                 // User has gone to limbo.
@@ -64,16 +67,12 @@ public final class LocrawManager implements Constants {
                         event.setCanceled(true);
                     }
                     currentLocation = new LocationParsed(json);
-                    XanderLib.LOGGER.info("Switched GameType to: " + currentLocation.getGameType().name());
+                    XanderLib.LOGGER.info("New Game Type: " + currentLocation.getGameType().friendlyName());
                 }
             }
         } else {
             currentLocation = LocationParsed.LIMBO;
         }
-    }
-
-    public static LocrawManager getInstance() {
-        return INSTANCE;
     }
 
     public LocationParsed getCurrentLocation() {

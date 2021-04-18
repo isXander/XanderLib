@@ -51,6 +51,10 @@ public abstract class TextElement implements Constants {
         return false;
     }
 
+    public void render() {
+
+    }
+
     protected abstract boolean canRender();
 
     public BetterJsonObject generateJson() {

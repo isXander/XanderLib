@@ -16,6 +16,7 @@
 package co.uk.isxander.xanderlib.utils;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.Color;
 import java.util.List;
@@ -38,11 +39,18 @@ public final class GuiUtils implements Constants {
         }
     }
 
-    public static void drawWrappedCenteredString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow, int width) {
+    public static void drawWrappedString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow, int width, boolean centered) {
+        ScaledResolution res = new ScaledResolution(mc);
         List<String> lines = StringUtils.wrapTextLines(text, fontRendererIn, width, " ");
         int i = 0;
         for (String line : lines) {
-            GuiUtils.drawCenteredString(fontRendererIn, line, x, y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i), color, shadow);
+            float lineY = y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i);
+            if (centered) {
+                GuiUtils.drawCenteredString(fontRendererIn, line, x, lineY, color, shadow);
+            } else {
+                fontRendererIn.drawString(line, x, lineY, color, shadow);
+            }
+
             i++;
         }
     }

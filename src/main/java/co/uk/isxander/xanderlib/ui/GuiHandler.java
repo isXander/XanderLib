@@ -23,11 +23,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public final class GuiHandler implements Constants {
 
-    private static GuiHandler INSTANCE = null;
-
     private GuiScreen screen;
 
-    private GuiHandler() {
+    public GuiHandler() {
         this.screen = null;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -42,13 +40,6 @@ public final class GuiHandler implements Constants {
             mc.displayGuiScreen(screen);
             screen = null;
         }
-    }
-
-    public static GuiHandler getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new GuiHandler();
-
-        return INSTANCE;
     }
 
 }

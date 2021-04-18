@@ -111,7 +111,8 @@ public final class StringUtils {
     }
 
     public static String wrapText(String text, FontRenderer fontRenderer, int lineWidth, String split) {
-        String[] words = text.split(split);
+        // split with line ending too
+        String[] words = text.split("(" + split + "|\n)");
         // current line width
         int lineLength = 0;
         // string concatenation in loop is bad
@@ -166,6 +167,11 @@ public final class StringUtils {
         }
 
         return count;
+    }
+
+    public static String firstUpper(String original) {
+        if (original.length() == 1) return original.toUpperCase();
+        return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
     }
 
 }

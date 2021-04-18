@@ -46,4 +46,8 @@ public class ExternalFileTexture extends AbstractTexture {
     protected BufferedImage modifyImage(BufferedImage original) {
         return original;
     }
+
+    public interface ImageModifier {
+        BufferedImage modify(BufferedImage original);
+    }
 }

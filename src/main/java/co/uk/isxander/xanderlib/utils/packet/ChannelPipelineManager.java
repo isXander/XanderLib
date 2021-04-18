@@ -26,28 +26,13 @@ import java.util.*;
 
 public final class ChannelPipelineManager implements Constants {
 
-    private static ChannelPipelineManager INSTANCE = null;
-
-    /**
-     * Returns static instance of class.
-     * Creates a new instance if null.
-     *
-     * @return instance of class
-     */
-    public static ChannelPipelineManager getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new ChannelPipelineManager();
-
-        return INSTANCE;
-    }
-
     /* List of custom channel handlers to add next tick */
-    private final Map<IChannelHandlerCustom, Boolean> handlers;
+    private final List<IChannelHandlerCustom> handlers;
     /* List of handler names to remove next tick */
     private final List<String> toRemoveHandlers;
 
-    private ChannelPipelineManager() {
-        handlers = new HashMap<>();
+    public ChannelPipelineManager() {
+        handlers = new ArrayList<>();
         toRemoveHandlers = new ArrayList<>();
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -60,7 +45,7 @@ public final class ChannelPipelineManager implements Constants {
      * @param handler the actual handler
      */
     public void addHandler(IChannelHandlerCustom handler) {
-        handlers.put(handler, false);
+        handlers.add(handler);
     }
 
     /**
@@ -83,8 +68,8 @@ public final class ChannelPipelineManager implements Constants {
         }
 
         ChannelPipeline pipeline = mc.getNetHandler().getNetworkManager().channel().pipeline();
-        new HashMap<>(handlers).forEach((handler, added) -> {
-            if (!added) {
+        handlers.forEach((handler) -> {
+            if (pipeline.get(handler.name()) == null) {
                 boolean meetsRequirements = true;
                 for (String requirement : handler.requires()) {
                     if (pipeline.get(requirement) == null)
@@ -109,7 +94,6 @@ public final class ChannelPipelineManager implements Constants {
 
                 }
             }
-            handlers.put(handler, true);
         });
 
         for (String name : toRemoveHandlers) {
