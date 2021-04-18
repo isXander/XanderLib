@@ -46,7 +46,7 @@ import java.util.List;
 public final class XanderLib implements Constants {
 
     public static final String MOD_NAME = "XanderLib";
-    public static final String MOD_VER = "0.1";
+    public static final String MOD_VER = "0.2";
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
@@ -75,16 +75,17 @@ public final class XanderLib implements Constants {
         notificationManager = new NotificationManager();
         channelPipelineManager = new ChannelPipelineManager();
 
-        ScaledResolution res = new ScaledResolution(mc);
         getGuiEditor().addModifier(GuiOptions.class, new AbstractGuiModifier() {
             @Override
             public void onInitGuiPost(GuiScreen screen, List<GuiButton> buttonList) {
+                ScaledResolution res = new ScaledResolution(mc);
                 buttonList.add(new GuiButtonExt(990, res.getScaledWidth() - 75, 0, 75, 20, "XanderLib"));
             }
 
             @Override
             public void onActionPerformedPost(GuiScreen screen, List<GuiButton> buttonList, GuiButton button) {
-                getNotificationManager().push("XanderLib", "This feature has not yet been added in this release.");
+                if (button.id == 990)
+                    getNotificationManager().push("XanderLib", "This feature has not yet been added in this release.");
             }
         });
 
