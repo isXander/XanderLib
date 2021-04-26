@@ -19,7 +19,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "0.2"
+version = "0.3"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -54,6 +54,8 @@ configurations {
 
 
 dependencies {
+    provided files("libs/modcore.jar")
+    
     // Languages
     embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32'
     embed 'org.jetbrains.kotlin:kotlin-reflect:1.4.32'
@@ -67,10 +69,11 @@ dependencies {
         exclude module: 'commons-io'
     }
     embed 'com.squareup.okhttp3:okhttp:4.9.1'
-    embed ('club.sk1er:Vigilance:1.1.3-10809') {
+    embed ('club.sk1er:Vigilance:98-10809-SNAPSHOT') {
         exclude module: 'kotlin-stdlib-jdk8'
         exclude module: 'kotlin-reflect'
     }
+    embed 'org.javassist:javassist:3.27.0-GA'
 }
 
 processResources{

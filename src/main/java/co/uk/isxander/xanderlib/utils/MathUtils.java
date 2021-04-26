@@ -15,6 +15,7 @@
 
 package co.uk.isxander.xanderlib.utils;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,6 +85,30 @@ public final class MathUtils {
         Collections.sort(nums);
         int index = (int) Math.ceil(percentile / 100.0 * nums.size());
         return nums.get(index - 1);
+    }
+
+    /**
+     * @param val value to change
+     * @param places how many decimal places the number should have
+     * @return x amount of places of precision of a value
+     */
+    public static float precision(float val, int places) {
+        int mod = Math.max(places, 0);
+
+        if (places(val) <= mod)
+            return val;
+        if (mod == 0)
+            return (float) Math.round(val);
+
+        return (float) Math.round(val * mod) / mod;
+    }
+
+    /**
+     * @param val value to check
+     * @return the number of decimal places in a number
+     */
+    public static int places(float val) {
+        return BigDecimal.valueOf(val).scale();
     }
 
 }

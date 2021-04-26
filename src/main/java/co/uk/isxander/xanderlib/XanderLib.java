@@ -27,6 +27,7 @@ import co.uk.isxander.xanderlib.utils.packet.adapters.*;
 import co.uk.isxander.xanderlib.utils.packet.handler.CustomChannelHandlerFactory;
 import co.uk.isxander.xanderlib.utils.texturemanager.ModifiedTextureManager;
 import io.netty.channel.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,6 +38,7 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +48,7 @@ import java.util.List;
 public final class XanderLib implements Constants {
 
     public static final String MOD_NAME = "XanderLib";
-    public static final String MOD_VER = "0.2";
+    public static final String MOD_VER = "0.3";
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
@@ -99,6 +101,7 @@ public final class XanderLib implements Constants {
                             MinecraftForge.EVENT_BUS.post(new PacketEvent.Incoming((Packet<?>) msg));
                     }
                 })
+                .setAddBefore("packet_handler")
                 .build());
         getChannelPipelineManager().addHandler(CustomChannelHandlerFactory.newInstance()
                 .setName("xanderlib_packet_listener_outbound")
@@ -110,6 +113,7 @@ public final class XanderLib implements Constants {
                             MinecraftForge.EVENT_BUS.post(new PacketEvent.Outgoing((Packet<?>) msg));
                     }
                 })
+                .setAddBefore("packet_handler")
                 .build());
     }
 
@@ -120,7 +124,6 @@ public final class XanderLib implements Constants {
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
-        // Create the instance
 
     }
 
