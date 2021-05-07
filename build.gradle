@@ -19,7 +19,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "0.3"
+version = "0.4"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -74,6 +74,7 @@ dependencies {
         exclude module: 'kotlin-reflect'
     }
     embed 'org.javassist:javassist:3.27.0-GA'
+    embed 'org.reflections:reflections:0.9.12'
 }
 
 processResources{
