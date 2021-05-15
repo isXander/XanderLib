@@ -25,6 +25,12 @@ import java.util.List;
 
 public final class StringUtils {
 
+    /**
+     * Shifts a string a certain number of places
+     *
+     * @param s string to shift
+     * @param amt amount of places to shift
+     */
     public String shiftString(String s, int amt) {
         List<Character> chars = new ArrayList<>();
         for (char c : s.toCharArray())
@@ -39,6 +45,9 @@ public final class StringUtils {
         return Joiner.on("").join(chars);
     }
 
+    /**
+     * Formats bedwars star level into Hypixel's format
+     */
     public static String formatBedwarsStar(int stars) {
         if (stars < 100)
             return EnumChatFormatting.GRAY + "[" + stars + "\u272B]";
@@ -82,6 +91,11 @@ public final class StringUtils {
         }
     }
 
+    /**
+     * @param str string to check
+     * @param times how many times the character has to appear in a string before it is counted as a duplicate
+     * @return the amount of duplicate characters in a string
+     */
     public static int hasDuplicateCharacters(String str, int times) {
         int repeat = 0;
         int index = -1;
@@ -110,7 +124,47 @@ public final class StringUtils {
         return -1;
     }
 
-    public static String wrapText(String text, FontRenderer fontRenderer, int lineWidth, String split) {
+    /**
+     * Wraps text according to the character length per line
+     *
+     * This function is lenient as each line can go above the maximum
+     * character length in order to complete a word
+     *
+     * @param text text to wrap
+     * @param charLength the desired character length of each line
+     */
+    public static String wrapTextLenient(String text, int charLength) {
+        StringBuilder sb = new StringBuilder();
+        int lineLength = 0;
+        boolean needsLineBreak = false;
+        for (char c : text.toCharArray()) {
+            lineLength += 1;
+            if (c == '\n') lineLength = 0;
+            if (lineLength > charLength) {
+                needsLineBreak = true;
+            }
+            if (needsLineBreak && c == ' ') {
+                lineLength = 0;
+                sb.append('\n');
+                needsLineBreak = false;
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Wraps text according to the font renderer's string width
+     *
+     * @param text text to wrap
+     * @param fontRenderer font renderer that measures string width
+     * @param lineWidth maximum line width
+     * @param split word splitter
+     * @return wrapped text
+     */
+    public static String wrapTextFR(String text, FontRenderer fontRenderer, int lineWidth, String split) {
         // split with line ending too
         String[] words = text.split("(" + split + "|\n)");
         // current line width
@@ -140,15 +194,20 @@ public final class StringUtils {
             } else {
                 // the single word will not fit so run the function again with just this word
                 // and tell it that every character is it's own word
-                output.append(wrapText(word, fontRenderer, lineWidth, "")).append(split);
+                output.append(wrapTextFR(word, fontRenderer, lineWidth, "")).append(split);
             }
         }
 
         return output.toString();
     }
 
-    public static List<String> wrapTextLines(String text, FontRenderer fontRenderer, int lineWidth, String split) {
-        String wrapped = wrapText(text, fontRenderer, lineWidth, split);
+    /**
+     * Wraps text using font renderer and adds each line to a list
+     *
+     * @see StringUtils#wrapTextLinesFR(String, FontRenderer, int, String)
+     */
+    public static List<String> wrapTextLinesFR(String text, FontRenderer fontRenderer, int lineWidth, String split) {
+        String wrapped = wrapTextFR(text, fontRenderer, lineWidth, split);
         if (wrapped.equals("")) {
             return new ArrayList<>();
         }
@@ -156,6 +215,12 @@ public final class StringUtils {
         return Arrays.asList(wrapped.split("\n"));
     }
 
+    /**
+     * Counts how many times text appears in a string
+     *
+     * @param text string to check
+     * @param toCheck what to check for
+     */
     public static int count(String text, String toCheck) {
         int count = 0;
 
@@ -169,9 +234,30 @@ public final class StringUtils {
         return count;
     }
 
+    /**
+     * Makes the first character of a string upper-case
+     *
+     * @param original original text
+     */
     public static String firstUpper(String original) {
         if (original.length() == 1) return original.toUpperCase();
         return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
+    }
+
+    /**
+     * Repeats text some amount of times
+     * Backported from later Java versions
+     *
+     * @param text text to repeat
+     * @param amount amount of times to repeat
+     */
+    public static String repeat(String text, int amount) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <= amount; i++) {
+            sb.append(text);
+        }
+
+        return sb.toString();
     }
 
 }

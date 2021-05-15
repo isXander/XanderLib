@@ -55,7 +55,9 @@ public enum GameType {
     /* Warlords */
     BATTLEGROUNDS("Warlords"),
     /* Limbo - the afk house */
-    LIMBO("Limbo");
+    LIMBO("Limbo"),
+    /* SMP */
+    SMP("SMP");
 
     private final String friendlyName;
     GameType(String friendlyName) {

@@ -23,6 +23,20 @@ import java.util.List;
 
 public final class GuiUtils implements Constants {
 
+    public static final String[] COLOR_CODES = { "0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f" };
+
+    public static void drawString(FontRenderer fontRendererIn, String text, float x, float y, boolean shadow, boolean bordered, boolean chroma, boolean centered, int color) {
+        if (bordered) {
+            drawBorderedString(fontRendererIn, text, x, y, centered, chroma, color);
+        } else if (chroma) {
+            drawChromaString(fontRendererIn, text, x, y, shadow, centered);
+        } else if (centered) {
+            drawCenteredString(fontRendererIn, text, x, y, color, shadow);
+        } else {
+            fontRendererIn.drawString(text, x, y, color, shadow);
+        }
+    }
+
     public static void drawCenteredString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow) {
         fontRendererIn.drawString(text, x - fontRendererIn.getStringWidth(text) / 2f, y, color, shadow);
     }
@@ -41,7 +55,7 @@ public final class GuiUtils implements Constants {
 
     public static void drawWrappedString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow, int width, boolean centered) {
         ScaledResolution res = new ScaledResolution(mc);
-        List<String> lines = StringUtils.wrapTextLines(text, fontRendererIn, width, " ");
+        List<String> lines = StringUtils.wrapTextLinesFR(text, fontRendererIn, width, " ");
         int i = 0;
         for (String line : lines) {
             float lineY = y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i);
@@ -56,7 +70,7 @@ public final class GuiUtils implements Constants {
     }
 
     public static void drawWrappedChromaString(FontRenderer fontRendererIn, String text, float x, float y, boolean shadow, int width, boolean centered) {
-        List<String> lines = StringUtils.wrapTextLines(text, fontRendererIn, width, " ");
+        List<String> lines = StringUtils.wrapTextLinesFR(text, fontRendererIn, width, " ");
         int i = 0;
         for (String line : lines) {
             GuiUtils.drawChromaString(fontRendererIn, line, x, y + (fontRendererIn.FONT_HEIGHT * i) + (2 * i), shadow, centered);
@@ -67,6 +81,41 @@ public final class GuiUtils implements Constants {
     public static Color getChroma(double x, double y) {
         float v = 2000.0f;
         return new Color(Color.HSBtoRGB((float)((System.currentTimeMillis() - x * 10.0 * 1.0 - y * 10.0 * 1.0) % v) / v, 0.8f, 0.8f));
+    }
+
+    public static void drawBorderedString(FontRenderer fontRendererIn, String text, float x, float y, boolean centered, boolean chroma, int color) {
+        String noColors = GuiUtils.stripColorFormattingCodes(text);
+
+        drawString(fontRendererIn, noColors, x + 1, y, false, false, false, centered, (color >> 24) << 24);
+        drawString(fontRendererIn, noColors, x - 1, y, false, false, false, centered, (color >> 24) << 24);
+        drawString(fontRendererIn, noColors, x, y + 1, false, false, false, centered, (color >> 24) << 24);
+        drawString(fontRendererIn, noColors, x, y - 1, false, false, false, centered, (color >> 24) << 24);
+        drawString(fontRendererIn, text, x, y, false, false, chroma, centered, color);
+    }
+
+    public static String stripFormattingCodes(String text, String formatCode) {
+        while (text.contains(formatCode)) {
+            text = text.replace(formatCode + text.charAt(text.indexOf(formatCode) + 1), "");
+        }
+
+        return text;
+    }
+
+    public static String stripFormattingCodes(String text) {
+        return stripFormattingCodes(text, "\u00A7");
+    }
+
+    public static String stripColorFormattingCodes(String text, String formatCode) {
+        for (String code : COLOR_CODES) {
+            text = text.replace(formatCode + code, formatCode + "r");
+            text = text.replace((formatCode + code).toUpperCase(), formatCode + "r");
+        }
+
+        return text;
+    }
+
+    public static String stripColorFormattingCodes(String text) {
+        return stripFormattingCodes(text, "\u00A7");
     }
 
 }

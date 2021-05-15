@@ -87,6 +87,12 @@ public final class Position {
         scale -= b.scale;
     }
 
+    public void set(Position newPosition) {
+        setScaledX(newPosition.getXScaled());
+        setScaledY(newPosition.getYScaled());
+        setScale(newPosition.getScale());
+    }
+
     public static Position center() {
         return new Position(0, 0, 1);
     }

@@ -15,17 +15,16 @@
 
 package co.uk.isxander.xanderlib.hypixel.locraw;
 
+import club.sk1er.mods.core.util.MinecraftUtils;
+import club.sk1er.mods.core.util.Multithreading;
 import co.uk.isxander.xanderlib.XanderLib;
 import co.uk.isxander.xanderlib.utils.Constants;
-import co.uk.isxander.xanderlib.utils.MinecraftUtils;
-import co.uk.isxander.xanderlib.utils.Multithreading;
 import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 import co.uk.isxander.xanderlib.utils.json.JsonUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +48,7 @@ public final class LocrawManager implements Constants {
                 case "       ":
                     if (!waitingForLocraw) {
                         waitingForLocraw = true;
-                        Multithreading.scheduleAsync(() -> {
+                        Multithreading.schedule(() -> {
                             mc.thePlayer.sendChatMessage("/locraw");
                         }, 500, TimeUnit.MILLISECONDS);
                     }

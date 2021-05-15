@@ -17,17 +17,13 @@ package co.uk.isxander.xanderlib;
 
 import co.uk.isxander.xanderlib.event.PacketEvent;
 import co.uk.isxander.xanderlib.hypixel.locraw.LocrawManager;
-import co.uk.isxander.xanderlib.ui.GuiHandler;
 import co.uk.isxander.xanderlib.ui.editor.AbstractGuiModifier;
 import co.uk.isxander.xanderlib.ui.editor.GuiEditor;
-import co.uk.isxander.xanderlib.ui.notification.NotificationManager;
 import co.uk.isxander.xanderlib.utils.Constants;
 import co.uk.isxander.xanderlib.utils.packet.ChannelPipelineManager;
 import co.uk.isxander.xanderlib.utils.packet.adapters.*;
 import co.uk.isxander.xanderlib.utils.packet.handler.CustomChannelHandlerFactory;
-import co.uk.isxander.xanderlib.utils.texturemanager.ModifiedTextureManager;
 import io.netty.channel.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
@@ -38,7 +34,6 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,7 +43,7 @@ import java.util.List;
 public final class XanderLib implements Constants {
 
     public static final String MOD_NAME = "XanderLib";
-    public static final String MOD_VER = "0.4";
+    public static final String MOD_VER = "0.5";
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
@@ -57,11 +52,8 @@ public final class XanderLib implements Constants {
     private static XanderLib instance;
 
     private LocrawManager locrawManager;
-    private GuiHandler guiHandler;
-    private NotificationManager notificationManager;
     private GuiEditor guiEditor;
     private ChannelPipelineManager channelPipelineManager;
-    private ModifiedTextureManager modifiedTextureManager;
 
     private boolean initialised = false;
 
@@ -70,26 +62,9 @@ public final class XanderLib implements Constants {
             return;
         initialised = true;
 
-        modifiedTextureManager = new ModifiedTextureManager();
         locrawManager = new LocrawManager();
-        guiHandler = new GuiHandler();
         guiEditor = new GuiEditor();
-        notificationManager = new NotificationManager();
         channelPipelineManager = new ChannelPipelineManager();
-
-        getGuiEditor().addModifier(GuiOptions.class, new AbstractGuiModifier() {
-            @Override
-            public void onInitGuiPost(GuiScreen screen, List<GuiButton> buttonList) {
-                ScaledResolution res = new ScaledResolution(mc);
-                buttonList.add(new GuiButtonExt(990, res.getScaledWidth() - 75, 0, 75, 20, "XanderLib"));
-            }
-
-            @Override
-            public void onActionPerformedPost(GuiScreen screen, List<GuiButton> buttonList, GuiButton button) {
-                if (button.id == 990)
-                    getNotificationManager().push("XanderLib", "This feature has not yet been added in this release.");
-            }
-        });
 
         getChannelPipelineManager().addHandler(CustomChannelHandlerFactory.newInstance()
                 .setName("xanderlib_packet_listener_inbound")
@@ -131,20 +106,8 @@ public final class XanderLib implements Constants {
         return instance;
     }
 
-    public ModifiedTextureManager getModifiedTextureManager() {
-        return modifiedTextureManager;
-    }
-
     public LocrawManager getLocrawManager() {
         return locrawManager;
-    }
-
-    public GuiHandler getGuiHandler() {
-        return guiHandler;
-    }
-
-    public NotificationManager getNotificationManager() {
-        return notificationManager;
     }
 
     public GuiEditor getGuiEditor() {

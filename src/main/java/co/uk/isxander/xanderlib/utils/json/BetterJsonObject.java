@@ -138,6 +138,10 @@ public final class BetterJsonObject {
         return this.data.get(key);
     }
 
+    public BetterJsonObject getObj(final String key) {
+        return new BetterJsonObject(this.data.getAsJsonObject(key));
+    }
+
     public JsonObject getData() {
         return this.data;
     }
