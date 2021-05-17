@@ -18,6 +18,7 @@ package co.uk.isxander.xanderlib.hypixel.locraw;
 import club.sk1er.mods.core.util.MinecraftUtils;
 import club.sk1er.mods.core.util.Multithreading;
 import co.uk.isxander.xanderlib.XanderLib;
+import co.uk.isxander.xanderlib.event.NewLocationEvent;
 import co.uk.isxander.xanderlib.utils.Constants;
 import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 import co.uk.isxander.xanderlib.utils.json.JsonUtils;
@@ -46,12 +47,10 @@ public final class LocrawManager implements Constants {
                 // Hypixel sends either of these messages when you switch lobbies
                 case "                         ":
                 case "       ":
-                    if (!waitingForLocraw) {
-                        waitingForLocraw = true;
-                        Multithreading.schedule(() -> {
-                            mc.thePlayer.sendChatMessage("/locraw");
-                        }, 500, TimeUnit.MILLISECONDS);
-                    }
+                    enqueueUpdate(500);
+                    break;
+                case "You are sending too many commands! Please try again in a few seconds.":
+                    enqueueUpdate(5000);
                     break;
                 // User has gone to limbo.
                 case "You are AFK. Move around to return from AFK.":
@@ -66,11 +65,21 @@ public final class LocrawManager implements Constants {
                         event.setCanceled(true);
                     }
                     currentLocation = new LocationParsed(json);
-                    XanderLib.LOGGER.info("New Game Type: " + currentLocation.getGameType().friendlyName());
+                    MinecraftForge.EVENT_BUS.post(new NewLocationEvent(currentLocation));
+                    XanderLib.LOGGER.info("New Location: " + currentLocation);
                 }
             }
         } else {
-            currentLocation = LocationParsed.LIMBO;
+            currentLocation = LocationParsed.UNKNOWN;
+        }
+    }
+
+    public void enqueueUpdate(long delayMs) {
+        if (!waitingForLocraw) {
+            waitingForLocraw = true;
+            Multithreading.schedule(() -> {
+                mc.thePlayer.sendChatMessage("/locraw");
+            }, delayMs, TimeUnit.MILLISECONDS);
         }
     }
 

@@ -19,18 +19,21 @@ import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 
 public final class LocationParsed {
 
-    public static final LocationParsed LIMBO = new LocationParsed("limbo", GameType.LIMBO, null, null);
+    public static final LocationParsed LIMBO = new LocationParsed("limbo", GameType.LIMBO, null, null, null);
+    public static final LocationParsed UNKNOWN = new LocationParsed(null, GameType.UNKNOWN, null, null, null);
 
     private String server;
     private GameType gameType;
     private String mode;
     private String map;
+    private String lobbyName;
 
-    public LocationParsed(String server, GameType gameType, String mode, String map) {
+    public LocationParsed(String server, GameType gameType, String mode, String map, String lobyName) {
         this.server = server;
         this.gameType = gameType;
         this.mode = mode;
         this.map = map;
+        this.lobbyName = lobyName;
     }
 
     public LocationParsed(String json) {
@@ -38,7 +41,7 @@ public final class LocationParsed {
     }
 
     public LocationParsed(BetterJsonObject o) {
-        this(o.optString("server", "unknown"), GameType.getType(o.optString("gametype", "LIMBO")), o.optString("mode", null), o.optString("map", null));
+        this(o.optString("server", "unknown"), GameType.getType(o.optString("gametype", "UNKNOWN")), o.optString("mode", null), o.optString("map", null), o.optString("lobbyname", null));
     }
 
     public String getServer() {
@@ -77,4 +80,21 @@ public final class LocationParsed {
         return mode == null || map == null;
     }
 
+    public String getLobbyName() {
+        return lobbyName;
+    }
+
+    public void setLobbyName(String lobbyName) {
+        this.lobbyName = lobbyName;
+    }
+
+    @Override
+    public String toString() {
+        return "LocationParsed{" +
+                "server='" + server + '\'' +
+                ", gameType=" + gameType +
+                ", mode='" + mode + '\'' +
+                ", map='" + map + '\'' +
+                '}';
+    }
 }

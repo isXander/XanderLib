@@ -15,6 +15,8 @@
 
 package co.uk.isxander.xanderlib.utils.json;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
@@ -27,6 +29,15 @@ public final class JsonUtils {
         } catch (JsonSyntaxException | IllegalStateException e) {
             return false;
         }
+    }
+
+    public static boolean jsonArrayContains(JsonArray arr, String val) {
+        for (JsonElement entry : arr) {
+            String str = entry.getAsString();
+            if (str != null && str.equals(val))
+                return true;
+        }
+        return false;
     }
 
 }

@@ -260,4 +260,31 @@ public final class StringUtils {
         return sb.toString();
     }
 
+    /**
+     * Converts 'SOME_ENUM' to 'Some Enum'
+     */
+    public static String capitalizeEnum(String in) {
+        String out = in.toLowerCase();
+        boolean lastSpace = true;
+        List<String> chars = new ArrayList<>();
+        for (char c : out.toCharArray()) {
+            chars.add(c + "");
+        }
+
+        for (int i = 0; i < chars.size(); i++) {
+            String c = chars.get(i);
+            if (lastSpace) {
+                chars.set(i, c.toUpperCase());
+            }
+
+            lastSpace = c.equals(" ");
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : chars)
+            sb.append(s);
+
+        return sb.toString();
+    }
+
 }

@@ -24,13 +24,17 @@ import java.io.IOException;
 
 public final class HttpsUtils {
 
+    public static Request.Builder setupRequest(String url) {
+        return new Request.Builder()
+                .url(url)
+                .addHeader("User-Agent", XanderLib.MOD_NAME + "/" + XanderLib.MOD_VER);
+    }
+
     public static Response getResponse(String url) {
         try {
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("User-Agent", XanderLib.MOD_NAME + "/" + XanderLib.MOD_VER)
-                    .build();
+            Request request = setupRequest(url).build();
+
             return client.newCall(request).execute();
         } catch (IOException e) {
             e.printStackTrace();

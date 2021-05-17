@@ -22,7 +22,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "0.5"
+version = "0.6"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -70,10 +70,6 @@ dependencies {
         exclude module: 'commons-io'
     }
     embed 'com.squareup.okhttp3:okhttp:4.9.1'
-    embed ('club.sk1er:Vigilance:98-10809-SNAPSHOT') {
-        exclude module: 'kotlin-stdlib-jdk8'
-        exclude module: 'kotlin-reflect'
-    }
     embed 'org.javassist:javassist:3.27.0-GA'
     embed 'org.reflections:reflections:0.9.12'
 }

@@ -57,7 +57,9 @@ public enum GameType {
     /* Limbo - the afk house */
     LIMBO("Limbo"),
     /* SMP */
-    SMP("SMP");
+    SMP("SMP"),
+    /* Unknown Game Type */
+    UNKNOWN("Unknown");
 
     private final String friendlyName;
     GameType(String friendlyName) {
