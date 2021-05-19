@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="First Party" pattern="src[XanderLib.main]:co.uk.isxander.xanderlib..*" />
-</component>
