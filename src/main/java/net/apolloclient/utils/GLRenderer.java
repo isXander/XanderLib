@@ -325,7 +325,7 @@ public final class GLRenderer {
      * @param thickness with of the border
      * @param color color of rectangle
      */
-    public static void drawHollowRoundedRectangle(int xPosition, int yPosition, int width, int height, int angle, int thickness, Color color) {
+    public static void drawHollowRoundedRectangle(float xPosition, float yPosition, float width, float height, int angle, float thickness, Color color) {
         drawHollowPartialCircle(xPosition + angle, yPosition + angle, angle, 0, 90, thickness, color);
         drawHollowPartialCircle(xPosition + width - angle, yPosition + angle, angle, 270, 360, thickness, color);
         drawHollowPartialCircle(
@@ -348,7 +348,7 @@ public final class GLRenderer {
      * @param borderColor color of rectangle border
      * @deprecated border overlaps - doesn't work with transparency
      */
-    public static void drawBorderedRectangle(int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor) {
+    public static void drawBorderedRectangle(float xPosition, float yPosition, float width, float height, float borderWidth, Color color, Color borderColor) {
         drawRectangle(xPosition, yPosition, width, height, color);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -386,7 +386,7 @@ public final class GLRenderer {
      * @param width width of rectangle
      * @param height height of rectangle
      */
-    public static void drawTexturedRectangle(ResourceLocation resourceLocation, int xPosition, int yPosition, int width, int height) {
+    public static void drawTexturedRectangle(ResourceLocation resourceLocation, float xPosition, float yPosition, float width, float height) {
         GL11.glEnable(GL11.GL_BLEND);
         Minecraft.getMinecraft().getTextureManager().bindTexture(resourceLocation);
         GL11.glBegin(GL11.GL_QUADS);
@@ -413,7 +413,7 @@ public final class GLRenderer {
      * @param sides number of sides in polygon
      * @param color color of polygon
      */
-    public static void drawRegularPolygon(int xPosition, int yPosition, int radius, int sides, Color color) {
+    public static void drawRegularPolygon(float xPosition, float yPosition, int radius, int sides, Color color) {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
