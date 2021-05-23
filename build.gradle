@@ -22,7 +22,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "0.7"
+version = "0.8"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -69,6 +69,8 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+    annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+
     embed 'com.squareup.okhttp3:okhttp:4.9.1'
     embed 'org.javassist:javassist:3.27.0-GA'
     embed 'org.reflections:reflections:0.9.12'
@@ -90,6 +92,8 @@ processResources{
 }
 
 jar {
+    archiveName = "${project.version}.jar"
+
     manifest.attributes(
             "MixinConfigs": 'mixins.xanderlib.json',
             "TweakClass": 'co.uk.isxander.xanderlib.mixins.XanderLibTweaker',

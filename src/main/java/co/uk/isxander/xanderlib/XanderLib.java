@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 public final class XanderLib implements Constants {
 
     public static final String MOD_NAME = "XanderLib";
-    public static final String MOD_VER = "0.7";
+    public static final String MOD_VER = "0.8";
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
