@@ -19,6 +19,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class GuiUtils implements Constants {
@@ -45,12 +46,43 @@ public final class GuiUtils implements Constants {
         if (centered)
             x -= fontRendererIn.getStringWidth(text) / 2f;
 
-        for (char c : text.toCharArray()) {
+        for (String c : toCharArrWithFormatting(text)) {
             int i = getChroma(x, y).getRGB();
-            String tmp = String.valueOf(c);
-           fontRendererIn.drawString(tmp, x, y, i, shadow);
-            x += fontRendererIn.getStringWidth(tmp);
+            fontRendererIn.drawString(c, x, y, i, shadow);
+            x += fontRendererIn.getStringWidth(c);
         }
+    }
+
+    public static List<String> toCharArrWithFormatting(String text) {
+        List<String> split = new ArrayList<>();
+
+        StringBuilder format = new StringBuilder();
+        boolean next = false;
+
+        char[] arr = text.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (next) {
+                next = false;
+                continue;
+            }
+
+            char c = arr[i];
+
+            if (i != arr.length - 1 && c == '\u00A7') {
+                char nextChar = arr[i + 1];
+                if (nextChar == 'r') {
+                    format.setLength(0);
+                } else {
+                    format.append('\u00A7').append(nextChar);
+                }
+                next = true;
+                continue;
+            }
+
+            split.add(format + String.valueOf(c));
+        }
+
+        return split;
     }
 
     public static void drawWrappedString(FontRenderer fontRendererIn, String text, float x, float y, int color, boolean shadow, int width, boolean centered) {
@@ -115,7 +147,7 @@ public final class GuiUtils implements Constants {
     }
 
     public static String stripColorFormattingCodes(String text) {
-        return stripFormattingCodes(text, "\u00A7");
+        return stripColorFormattingCodes(text, "\u00A7");
     }
 
 }
