@@ -99,11 +99,11 @@ public final class GLRenderer {
      * @param radius radius of circle
      * @param color color of circle
      */
-    public static void drawCircle(float xPosition, float yPosition, int radius, Color color) {
-        GL11.glPushMatrix();
+    public static void drawCircle(float xPosition, float yPosition, float radius, Color color) {
+        GlStateManager.pushMatrix();
         GL11.glEnable(3042);
         GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
+        GlStateManager.blendFunc(770, 771);
         GlStateManager.color(
                 color.getRed() / 255.0F,
                 color.getGreen() / 255.0F,
@@ -121,7 +121,7 @@ public final class GLRenderer {
         Tessellator.getInstance().draw();
         GL11.glEnable(3553);
         GL11.glDisable(3042);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         GlStateManager.bindTexture(0);
     }
@@ -163,7 +163,7 @@ public final class GLRenderer {
     }
 
     /**
-     * Same as {@link #drawCircle(float, float, int, Color)} accept can be confided by start angle and end
+     * Same as {@link #drawCircle(float, float, float, Color)} accept can be confided by start angle and end
      * angle.
      *
      * @param xPosition x start location
@@ -174,8 +174,8 @@ public final class GLRenderer {
      * @param color color of angle
      * @implNote Strait Angles - 90|180|270|360
      */
-    public static void drawPartialCircle(float xPosition, float yPosition, int radius, int startAngle, int endAngle, Color color) {
-        GL11.glPushMatrix();
+    public static void drawPartialCircle(float xPosition, float yPosition, float radius, int startAngle, int endAngle, Color color) {
+        GlStateManager.pushMatrix();
         GL11.glEnable(3042);
         GL11.glDisable(3553);
         GL11.glBlendFunc(770, 771);
@@ -196,7 +196,7 @@ public final class GLRenderer {
         Tessellator.getInstance().draw();
         GL11.glEnable(3553);
         GL11.glDisable(3042);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
         GlStateManager.bindTexture(0);
@@ -217,9 +217,9 @@ public final class GLRenderer {
      * @implNote Strait Angles - 90|180|270|360
      */
     public static void drawHollowPartialCircle(float xPosition, float yPosition, int radius, int startAngle, int endAngle, float thickness, Color color) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
+        GlStateManager.blendFunc(770, 771);
         GL11.glEnable(2848);
         GL11.glLineWidth(thickness);
         GlStateManager.color(
@@ -236,9 +236,9 @@ public final class GLRenderer {
         }
         GL11.glEnd();
         GL11.glEnable(3553);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         GL11.glLineWidth(2.0F);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         GlStateManager.bindTexture(0);
     }
@@ -303,14 +303,18 @@ public final class GLRenderer {
      * @param color color of rectangle
      */
     public static void drawRoundedRectangle(float xPosition, float yPosition, float width, float height, int angle, Color color) {
-        drawPartialCircle(xPosition + angle, yPosition + angle, angle, 0, 90, color);
-        drawPartialCircle(xPosition + width - angle, yPosition + angle, angle, 270, 360, color);
-        drawPartialCircle(
-                xPosition + width - angle, yPosition + height - angle, angle, 180, 270, color);
-        drawPartialCircle(xPosition + angle, yPosition + height - angle, angle, 90, 180, color);
-        drawRectangle(xPosition + angle, yPosition + height - angle, width - (angle * 2), angle, color);
-        drawRectangle(xPosition + angle, yPosition, width - (angle * 2), angle, color);
-        drawRectangle(xPosition, yPosition + angle, width, height - (angle * 2), color);
+        if (angle != 0) {
+            drawPartialCircle(xPosition + angle, yPosition + angle, angle, 0, 90, color);
+            drawPartialCircle(xPosition + width - angle, yPosition + angle, angle, 270, 360, color);
+            drawPartialCircle(
+                    xPosition + width - angle, yPosition + height - angle, angle, 180, 270, color);
+            drawPartialCircle(xPosition + angle, yPosition + height - angle, angle, 90, 180, color);
+            drawRectangle(xPosition + angle, yPosition + height - angle, width - (angle * 2), angle, color);
+            drawRectangle(xPosition + angle, yPosition, width - (angle * 2), angle, color);
+            drawRectangle(xPosition, yPosition + angle, width, height - (angle * 2), color);
+        } else {
+            drawRectangle(xPosition, yPosition, width, height, color);
+        }
     }
 
     /**
@@ -354,7 +358,7 @@ public final class GLRenderer {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GlStateManager.color(
                 borderColor.getRed() / 255.0F,
                 borderColor.getGreen() / 255.0F,
@@ -371,7 +375,7 @@ public final class GLRenderer {
         GL11.glVertex2d(xPosition, (yPosition + height));
         GL11.glVertex2d((xPosition + width), (yPosition + height));
         GL11.glEnd();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LINE_SMOOTH);

@@ -105,10 +105,21 @@ public final class MathUtils {
 
     /**
      * @param val value to check
-     * @return the number of decimal places in a number
+     * @return the scale of a number
      */
     public static int places(float val) {
         return BigDecimal.valueOf(val).scale();
+    }
+
+    /**
+     * @param val value to round
+     * @param places how many decimal places number should have
+     * @return a value with a certain amount of decimal places
+     */
+    public static float round(float val, int places) {
+        BigDecimal bd = new BigDecimal(Float.toString(val));
+        bd = bd.setScale(places, BigDecimal.ROUND_DOWN);
+        return bd.floatValue();
     }
 
 }

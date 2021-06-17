@@ -15,6 +15,8 @@
 
 package co.uk.isxander.xanderlib;
 
+import club.sk1er.mods.core.ModCore;
+import co.uk.isxander.xanderlib.command.SimpleCommand;
 import co.uk.isxander.xanderlib.event.PacketEvent;
 import co.uk.isxander.xanderlib.hypixel.locraw.LocrawManager;
 import co.uk.isxander.xanderlib.ui.editor.GuiEditor;
@@ -24,6 +26,7 @@ import co.uk.isxander.xanderlib.utils.packet.adapters.*;
 import co.uk.isxander.xanderlib.utils.packet.handler.CustomChannelHandlerFactory;
 import io.netty.channel.*;
 import net.minecraft.network.Packet;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 public final class XanderLib implements Constants {
 
     public static final String MOD_NAME = "XanderLib";
-    public static final String MOD_VER = "0.8";
+    public static final String MOD_VER = "@version@";
     public static final String MOD_ID = "xanderlib";
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");

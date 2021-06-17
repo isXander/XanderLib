@@ -22,7 +22,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "0.8"
+version = "0.9"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -33,6 +33,10 @@ minecraft {
     version = "1.8.9-11.15.1.2318-1.8.9"
     runDir = "run"
     mappings = "stable_22"
+
+    makeObfSourceJar = false
+
+    replace '@version@', version
 }
 
 mixin {
