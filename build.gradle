@@ -1,28 +1,12 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            name = "jitpack"
-            url = "https://jitpack.io/"
-        }
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = 'sponge'
-            url = 'https://repo.spongepowered.org/maven'
-        }
-    }
-    dependencies {
-        classpath "com.github.asbyth:ForgeGradle:86b2392"
-        classpath 'com.github.LXGaming:MixinGradle:d75e32e'
-    }
-}
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'org.spongepowered.mixin'
+plugins {
+    id 'java'
+    id 'maven-publish'
 
-version = "0.9"
+    id 'net.minecraftforge.gradle.forge' version '8708bf3e0'
+    id 'org.spongepowered.mixin' version '0.6-SNAPSHOT'
+}
+
+version = "1.0"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
