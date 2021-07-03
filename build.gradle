@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'maven-publish'
+    id 'maven'
 
     id 'net.minecraftforge.gradle.forge' version '8708bf3e0'
     id 'org.spongepowered.mixin' version '0.6-SNAPSHOT'
 }
 
-version = "1.0"
+version = "1.0.1"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
