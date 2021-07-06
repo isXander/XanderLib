@@ -4,6 +4,7 @@ plugins {
 
     id 'net.minecraftforge.gradle.forge' version '8708bf3e0'
     id 'org.spongepowered.mixin' version '0.6-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 version = "1.0.1"
@@ -39,8 +40,8 @@ repositories {
     }
 }
 configurations {
-    embed
-    compile.extendsFrom(embed)
+    include
+    implementation.extendsFrom(include)
 }
 
 
@@ -48,10 +49,10 @@ dependencies {
     provided files("libs/modcore.jar")
     
     // Languages
-    embed 'org.scala-lang:scala-library:2.11.12'
+    include 'org.scala-lang:scala-library:2.11.12'
 
     // Utilities
-    embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+    include('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
@@ -59,9 +60,9 @@ dependencies {
     }
     annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
 
-    embed 'com.squareup.okhttp3:okhttp:4.9.1'
-    embed 'org.javassist:javassist:3.27.0-GA'
-    embed 'org.reflections:reflections:0.9.12'
+    include 'com.squareup.okhttp3:okhttp:4.9.1'
+    include 'org.javassist:javassist:3.27.0-GA'
+    include 'org.reflections:reflections:0.9.12'
 }
 
 processResources{
@@ -88,16 +89,26 @@ jar {
             "TweakOrder": 0,
             "Manifest-Version": 1.0
     )
-
-    dependsOn configurations.compile
-
-    configurations.embed.each { dep ->
-        from(project.zipTree(dep)) {
-            exclude 'META-INF', 'META-INF/**'
-        }
-        from(project.zipTree(dep)) {
-            include 'META-INF/services', 'META-INF/services/**'
-        }
-    }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
+
+shadowJar {
+    archiveBaseName.set("${project.version}")
+    archiveVersion.set('')
+    archiveClassifier.set('')
+
+    configurations = [project.configurations.include]
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+    // https://youtrack.jetbrains.com/issue/KT-25709
+    exclude '**/*.kotlin_metadata'
+    exclude '**/*.kotlin_module'
+    exclude '**/*.kotlin_builtins'
+}
+
+reobf {
+    shadowJar {
+        mappingType = 'SEARGE'
+    }
+}
+
+reobfJar.dependsOn tasks.shadowJar
