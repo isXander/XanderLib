@@ -35,8 +35,12 @@ repositories {
         url = 'https://repo.spongepowered.org/maven/'
     }
     maven {
-        name = 'sk1er'
+        name = 'Sk1er Public'
         url = 'https://repo.sk1er.club/repository/maven-public'
+    }
+    maven {
+        name = 'JitPack'
+        url = "https://jitpack.io/"
     }
 }
 configurations {
@@ -46,10 +50,7 @@ configurations {
 
 
 dependencies {
-    provided files("libs/modcore.jar")
-    
-    // Languages
-    include 'org.scala-lang:scala-library:2.11.12'
+    implementation 'gg.essential:Essential:1194-10809-SNAPSHOT'
 
     // Utilities
     include('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
@@ -82,13 +83,6 @@ processResources{
 
 jar {
     archiveName = "${project.version}.jar"
-
-    manifest.attributes(
-            "MixinConfigs": 'mixins.xanderlib.json',
-            "TweakClass": 'co.uk.isxander.xanderlib.mixins.XanderLibTweaker',
-            "TweakOrder": 0,
-            "Manifest-Version": 1.0
-    )
 }
 
 shadowJar {

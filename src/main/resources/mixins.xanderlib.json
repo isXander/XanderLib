@@ -1,9 +1,0 @@
-{
-  "required": true,
-  "compatibilityLevel": "JAVA_8",
-  "package": "co.uk.isxander.xanderlib.mixins.impl",
-  "refmap": "mixins.xanderlib.refmap.json",
-  "mixins": [
-
-  ]
-}
