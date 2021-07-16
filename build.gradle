@@ -7,7 +7,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-version = "1.0.1"
+version = "1.1.0"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -53,6 +53,16 @@ dependencies {
     implementation 'gg.essential:Essential:1194-10809-SNAPSHOT'
 
     // Utilities
+    include('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+    }
+    annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+
+    include 'com.squareup.okhttp3:okhttp:4.9.1'
+    include 'org.javassist:javassist:3.27.0-GA'
     include 'org.reflections:reflections:0.9.12'
 }
 
