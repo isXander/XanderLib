@@ -53,6 +53,7 @@ dependencies {
     implementation 'gg.essential:Essential:1194-10809-SNAPSHOT'
 
     // Utilities
+    include 'com.squareup.okhttp3:okhttp:4.9.1'
     include 'org.reflections:reflections:0.9.12'
 }
 
