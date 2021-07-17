@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven'
+    id 'java-library'
 
     id 'net.minecraftforge.gradle.forge' version '8708bf3e0'
     id 'org.spongepowered.mixin' version '0.6-SNAPSHOT'
@@ -53,8 +54,8 @@ dependencies {
     implementation 'gg.essential:Essential:1194-10809-SNAPSHOT'
 
     // Utilities
-    include 'com.squareup.okhttp3:okhttp:4.9.1'
-    include 'org.reflections:reflections:0.9.12'
+    api 'com.squareup.okhttp3:okhttp:4.9.1'
+    api 'org.reflections:reflections:0.9.12'
 }
 
 processResources{
