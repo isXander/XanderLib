@@ -112,7 +112,7 @@ public final class GuiUtils implements Constants {
 
     public static Color getChroma(double x, double y) {
         float v = 2000.0f;
-        return new Color(Color.HSBtoRGB((float)((System.currentTimeMillis() - x * 10.0 * 1.0 - y * 10.0 * 1.0) % v) / v, 0.8f, 0.8f));
+        return new Color(Color.HSBtoRGB((float)((System.currentTimeMillis() - x * 10.0 * 1.0 - y * 10.0 * 1.0) % v) / v, 1.0f, 1.0f));
     }
 
     public static void drawBorderedString(FontRenderer fontRendererIn, String text, float x, float y, boolean centered, boolean chroma, int color) {
