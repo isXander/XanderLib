@@ -32,7 +32,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = XanderLib.MOD_ID, name = XanderLib.MOD_NAME, version = XanderLib.MOD_VER, clientSideOnly = true)
 public final class XanderLib implements Constants {
 
     public static final String MOD_NAME = "XanderLib";
@@ -41,8 +40,7 @@ public final class XanderLib implements Constants {
 
     public static final Logger LOGGER = LogManager.getLogger("XanderLib");
 
-    @Mod.Instance(MOD_ID)
-    private static XanderLib instance;
+    private static XanderLib instance = new XanderLib();
 
     private LocrawManager locrawManager;
     private GuiEditor guiEditor;
@@ -83,16 +81,6 @@ public final class XanderLib implements Constants {
                 })
                 .setAddBefore("packet_handler")
                 .build());
-    }
-
-    @Mod.EventHandler
-    public void onInit(FMLInitializationEvent event) {
-        initPhase();
-    }
-
-    @Mod.EventHandler
-    public void onPostInit(FMLPostInitializationEvent event) {
-
     }
 
     public static XanderLib getInstance() {
