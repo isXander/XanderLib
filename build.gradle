@@ -8,7 +8,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-version = "1.1.4"
+version = "1.1.5"
 group = "co.uk.isxander"
 archivesBaseName = "xanderlib"
 
@@ -51,7 +51,7 @@ configurations {
 
 
 dependencies {
-    implementation 'gg.essential:Essential:1194-10809-SNAPSHOT'
+    provided 'gg.essential:essential-1.8.9-forge:1234'
 
     // Utilities
     api 'com.squareup.okhttp3:okhttp:4.9.1'
