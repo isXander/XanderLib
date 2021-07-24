@@ -54,7 +54,9 @@ dependencies {
     provided 'gg.essential:essential-1.8.9-forge:1234'
 
     // Utilities
-    api 'com.squareup.okhttp3:okhttp:4.9.1'
+    api ('com.squareup.okhttp3:okhttp:4.9.1') {
+        exclude module: 'kotlin-stdlib-jdk8'
+    }
     api 'org.reflections:reflections:0.9.12'
 }
 
