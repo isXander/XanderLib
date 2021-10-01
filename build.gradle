@@ -54,7 +54,7 @@ dependencies {
     provided 'gg.essential:essential-1.8.9-forge:1286'
 
     // Utilities
-    api ('com.squareup.okhttp3:okhttp:4.9.1') {
+    api ('com.squareup.okhttp3:okhttp:4.9.2') {
         exclude module: 'kotlin-stdlib'
         exclude module: 'kotlin-stdlib-jdk8'
         exclude module: 'kotlin-stdlib-common'
