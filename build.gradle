@@ -59,7 +59,7 @@ dependencies {
         exclude module: 'kotlin-stdlib-jdk8'
         exclude module: 'kotlin-stdlib-common'
     }
-    api 'org.reflections:reflections:0.9.12'
+    api 'org.reflections:reflections:0.10.2'
 }
 
 processResources{
